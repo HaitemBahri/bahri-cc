@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - '@starwind-ui/astro@1.3.0'
+  - '@starwind-ui/runtime@1.3.0'
