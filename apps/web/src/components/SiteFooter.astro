@@ -1,0 +1,27 @@
+---
+import NavLinks from "@/components/NavLinks.astro";
+import { contact, pageHref } from "@/config/nav";
+import { t, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const label = t(lang);
+const link =
+  "rounded-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline outline-none focus-visible:ring-3 focus-visible:ring-outline";
+---
+
+<footer class="mt-16 border-t">
+  <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 text-sm">
+    <nav aria-label={label("nav.label")}>
+      <NavLinks lang={lang} class="flex flex-wrap gap-x-6 gap-y-2" linkClass={link} />
+    </nav>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2">
+      <li><a href={`mailto:${contact.email}`} class={link}>{label("footer.email")}: <span dir="ltr">{contact.email}</span></a></li>
+      <li><a href={contact.github} class={link}>GitHub</a></li>
+      <li><a href={pageHref(lang, "privacy")} class={link}>{label("footer.privacy")}</a></li>
+    </ul>
+  </div>
+</footer>

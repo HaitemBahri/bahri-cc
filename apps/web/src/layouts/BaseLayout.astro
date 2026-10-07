@@ -3,7 +3,9 @@ import "@/styles/starwind.css";
 import arabic400 from "@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2?url";
 import arabic500 from "@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2?url";
 import arabic700 from "@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2?url";
-import { dir, type Lang } from "@/i18n/ui";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { dir, t, type Lang } from "@/i18n/ui";
 
 interface Props {
   lang: Lang;
@@ -65,12 +67,16 @@ const arabicFontCss =
       })();
     </script>
   </head>
-  <body>
-    <header>
-      <slot name="header" />
-    </header>
-    <main>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="bg-background sr-only z-50 rounded-md px-4 py-2 focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:ring-3 focus:ring-outline focus:outline-none"
+      >{t(lang)("nav.skip")}</a
+    >
+    <SiteHeader lang={lang} />
+    <main id="main" tabindex="-1" class="mx-auto w-full max-w-6xl flex-1 px-4 py-8 outline-none">
       <slot />
     </main>
+    <SiteFooter lang={lang} />
   </body>
 </html>

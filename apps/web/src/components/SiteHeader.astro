@@ -1,0 +1,54 @@
+---
+import Menu from "@tabler/icons/outline/menu-2.svg";
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import NavLinks from "@/components/NavLinks.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import { Button } from "@/components/starwind/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/starwind/sheet";
+import { pageHref } from "@/config/nav";
+import { t, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const label = t(lang);
+const focus = "outline-none focus-visible:ring-3 focus-visible:ring-outline";
+const link = `rounded-md px-3 py-2 font-medium hover:bg-muted aria-[current=page]:text-primary-accent ${focus}`;
+---
+
+<header class="border-b">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+    <a href={pageHref(lang, "")} class={`rounded-md text-lg font-semibold ${focus}`}>bahri.cc</a>
+
+    <nav aria-label={label("nav.label")} class="hidden lg:block">
+      <NavLinks lang={lang} class="flex gap-1 text-sm" linkClass={link} />
+    </nav>
+
+    <div class="hidden items-center gap-1 lg:flex">
+      <ThemeToggle lang={lang} />
+      <LanguageSwitcher lang={lang} class={`${link} text-sm`} />
+    </div>
+
+    <Sheet>
+      <SheetTrigger asChild class="lg:hidden">
+        <Button variant="ghost" size="icon" aria-label={label("nav.menu")}>
+          <Menu aria-hidden="true" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side={lang === "ar" ? "left" : "right"} closeLabel={label("nav.close")} class="p-6">
+        <SheetHeader>
+          <SheetTitle>{label("nav.menu")}</SheetTitle>
+        </SheetHeader>
+        <nav aria-label={label("nav.label")}>
+          <NavLinks lang={lang} class="flex flex-col gap-1" linkClass={`block ${link}`} />
+        </nav>
+        <div class="flex items-center gap-1 border-t pt-4">
+          <ThemeToggle lang={lang} />
+          <LanguageSwitcher lang={lang} class={link} />
+        </div>
+      </SheetContent>
+    </Sheet>
+  </div>
+</header>
