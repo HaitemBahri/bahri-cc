@@ -1,0 +1,14 @@
+---
+import { languages, langs, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const other = langs.find((l) => l !== lang)!;
+// Same page, other locale: swap the first path segment.
+const href = Astro.url.pathname.replace(new RegExp(`^/${lang}/`), `/${other}/`);
+---
+
+<a href={href} hreflang={other} lang={other}>{languages[other]}</a>
