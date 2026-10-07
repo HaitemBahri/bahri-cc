@@ -1,7 +1,5 @@
 ---
 import { getEntry } from "astro:content";
-import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
-import ThemeToggle from "@/components/ThemeToggle.astro";
 import { langs, type Lang } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
@@ -13,9 +11,5 @@ if (!page) throw new Error(`Missing content: pages/${lang}/home.md`);
 ---
 
 <BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
-  <Fragment slot="header">
-    <ThemeToggle lang={lang} />
-    <LanguageSwitcher lang={lang} />
-  </Fragment>
   <h1>{page.data.title}</h1>
 </BaseLayout>
