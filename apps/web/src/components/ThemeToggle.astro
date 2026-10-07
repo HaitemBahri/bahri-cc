@@ -1,0 +1,36 @@
+---
+import { Button } from "@/components/starwind/button";
+import Moon from "@tabler/icons/outline/moon.svg";
+import Sun from "@tabler/icons/outline/sun.svg";
+---
+
+<Button variant="ghost" size="icon" aria-label="Dark mode" aria-pressed="false" data-theme-toggle>
+  <Moon class="dark:hidden" aria-hidden="true" />
+  <Sun class="hidden dark:block" aria-hidden="true" />
+</Button>
+
+<script>
+  const root = document.documentElement;
+  const toggles = document.querySelectorAll<HTMLElement>("[data-theme-toggle]");
+
+  const sync = () => {
+    const pressed = String(root.classList.contains("dark"));
+    toggles.forEach((toggle) => toggle.setAttribute("aria-pressed", pressed));
+  };
+
+  toggles.forEach((toggle) =>
+    toggle.addEventListener("click", () => {
+      const theme = root.classList.toggle("dark") ? "dark" : "light";
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {
+        // Storage blocked: the choice applies to this page only.
+      }
+      sync();
+    }),
+  );
+
+  // The head script also follows OS changes while no choice is stored.
+  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["class"] });
+  sync();
+</script>
