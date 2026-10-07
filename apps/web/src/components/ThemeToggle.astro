@@ -2,9 +2,16 @@
 import { Button } from "@/components/starwind/button";
 import Moon from "@tabler/icons/outline/moon.svg";
 import Sun from "@tabler/icons/outline/sun.svg";
+import { t, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<Button variant="ghost" size="icon" aria-label="Dark mode" aria-pressed="false" data-theme-toggle>
+<Button variant="ghost" size="icon" aria-label={t(lang)("theme.dark")} aria-pressed="false" data-theme-toggle>
   <Moon class="dark:hidden" aria-hidden="true" />
   <Sun class="hidden dark:block" aria-hidden="true" />
 </Button>
