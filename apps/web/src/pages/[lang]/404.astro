@@ -1,0 +1,23 @@
+---
+import { pageHref } from "@/config/nav";
+import { langs, t, type Lang } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// Served with status 404 by the CloudFront edge functions (BUILD-1421). Finalised in BUILD-1397.
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const label = t(lang);
+---
+
+<BaseLayout lang={lang} title={label("notFound.title")} description={label("notFound.text")} noindex>
+  <h1 class="text-3xl font-semibold">{label("notFound.title")}</h1>
+  <p class="text-muted-foreground mt-4">{label("notFound.text")}</p>
+  <p class="mt-6">
+    <a
+      href={pageHref(lang, "")}
+      class="text-primary-accent rounded-sm underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-outline"
+      >{label("notFound.home")}</a
+    >
+  </p>
+</BaseLayout>
