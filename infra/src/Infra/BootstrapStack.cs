@@ -27,8 +27,8 @@ sealed class BootstrapStack : Stack
                 {
                     ["token.actions.githubusercontent.com:sub"] = new[]
                     {
-                        $"repo:{Settings.GitHubRepo}:ref:refs/tags/web/v*",
-                        $"repo:{Settings.GitHubRepo}:ref:refs/tags/api/v*",
+                        $"{Settings.GitHubSubject}:ref:refs/tags/web/v*",
+                        $"{Settings.GitHubSubject}:ref:refs/tags/api/v*",
                     },
                 },
             }),
