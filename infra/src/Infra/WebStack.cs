@@ -8,6 +8,8 @@ using Amazon.CDK.AWS.Route53.Targets;
 using Amazon.CDK.AWS.S3;
 using Amazon.CDK.AWS.SSM;
 using Constructs;
+using System.Text;
+using System.Text.Json;
 
 namespace Infra;
 
@@ -58,6 +60,14 @@ sealed class WebStack : Stack
             },
         });
 
+        var viewerRequest = EdgeFunction("ViewerRequest", "viewer-request.js", new
+        {
+            routes = PageRoutes(),
+            prelaunch = settings.Prelaunch,
+            previewToken = settings.PreviewToken,
+        });
+        var viewerResponse = EdgeFunction("ViewerResponse", "viewer-response.js", new { prelaunch = settings.Prelaunch });
+
         var distribution = new Distribution(this, "Distribution", new DistributionProps
         {
             DefaultBehavior = new BehaviorOptions
@@ -69,6 +79,11 @@ sealed class WebStack : Stack
                 CachePolicy = CachePolicy.CACHING_OPTIMIZED,
                 ResponseHeadersPolicy = headers,
                 Compress = true,
+                FunctionAssociations =
+                [
+                    new FunctionAssociation { Function = viewerRequest, EventType = FunctionEventType.VIEWER_REQUEST },
+                    new FunctionAssociation { Function = viewerResponse, EventType = FunctionEventType.VIEWER_RESPONSE },
+                ],
             },
             DomainNames = [Settings.Domain, $"www.{Settings.Domain}"],
             Certificate = Certificate.FromCertificateArn(this, "Certificate", settings.CertificateArn),
@@ -117,5 +132,37 @@ sealed class WebStack : Stack
 
         new CfnOutput(this, "BucketName", new CfnOutputProps { Value = bucket.BucketName });
         new CfnOutput(this, "DistributionId", new CfnOutputProps { Value = distribution.DistributionId });
+    }
+
+    // CloudFront Functions code limit.
+    const int MaxFunctionBytes = 10 * 1024;
+
+    // Fills the __CONFIG__ placeholder in infra/edge/<file> (tested by edge/edge.test.mjs).
+    Function EdgeFunction(string id, string file, object config)
+    {
+        var code = File.ReadAllText(Path.Combine("edge", file)).Replace("__CONFIG__", JsonSerializer.Serialize(config));
+        var size = Encoding.UTF8.GetByteCount(code);
+        if (size > MaxFunctionBytes)
+            throw new InvalidOperationException($"{file} is {size} bytes; CloudFront Functions allow {MaxFunctionBytes}");
+
+        return new Function(this, id, new FunctionProps
+        {
+            Code = FunctionCode.FromInline(code),
+            Runtime = FunctionRuntime.JS_2_0,
+        });
+    }
+
+    // Every built page ("/en/about/" for dist/en/about/index.html). Empty when the site isn't built (CI synth).
+    static string[] PageRoutes()
+    {
+        var dist = Path.GetFullPath(System.Environment.GetEnvironmentVariable("WEB_DIST") ?? Path.Combine("..", "apps", "web", "dist"));
+        if (!Directory.Exists(dist)) return [];
+
+        return Directory.GetFiles(dist, "index.html", SearchOption.AllDirectories)
+            .Select(file => Path.GetRelativePath(dist, Path.GetDirectoryName(file)!).Replace('\\', '/'))
+            .Where(dir => dir != ".")
+            .Select(dir => $"/{dir}/")
+            .Order(StringComparer.Ordinal)
+            .ToArray();
     }
 }
