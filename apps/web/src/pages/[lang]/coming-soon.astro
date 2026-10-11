@@ -1,0 +1,26 @@
+---
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import { contact } from "@/config/nav";
+import { langs, t, type Lang } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// Holding page served for every page request while PUBLIC_PRELAUNCH=true (BUILD-1421).
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const label = t(lang);
+const link = "rounded-sm underline-offset-4 hover:underline outline-none focus-visible:ring-3 focus-visible:ring-outline";
+---
+
+<BaseLayout lang={lang} title={label("soon.name")} description={label("soon.text")} noindex bare>
+  <div class="flex min-h-[70dvh] flex-col items-center justify-center gap-4 text-center">
+    <h1 class="text-4xl font-semibold">{label("soon.name")}</h1>
+    <p class="text-muted-foreground text-lg">{label("soon.text")}</p>
+    <a href={`mailto:${contact.email}`} class={`text-primary-accent ${link}`} dir="ltr">{contact.email}</a>
+    <div class="flex items-center gap-2">
+      <ThemeToggle lang={lang} />
+      <LanguageSwitcher lang={lang} class={`px-3 py-2 ${link}`} />
+    </div>
+  </div>
+</BaseLayout>

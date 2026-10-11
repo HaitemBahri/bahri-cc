@@ -11,9 +11,13 @@ interface Props {
   lang: Lang;
   title: string;
   description: string;
+  // Error and holding pages must not be indexed.
+  noindex?: boolean;
+  // Without header and footer (holding page).
+  bare?: boolean;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, noindex = false, bare = false } = Astro.props;
 
 // Arabic font is emitted only on /ar/ pages so English pages never download it.
 const arabicFonts = { 400: arabic400, 500: arabic500, 700: arabic700 };
@@ -36,6 +40,7 @@ const arabicFontCss =
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     {
       lang === "ar" && (
         <>
@@ -73,10 +78,10 @@ const arabicFontCss =
       class="bg-background sr-only z-50 rounded-md px-4 py-2 focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:ring-3 focus:ring-outline focus:outline-none"
       >{t(lang)("nav.skip")}</a
     >
-    <SiteHeader lang={lang} />
+    {!bare && <SiteHeader lang={lang} />}
     <main id="main" tabindex="-1" class="mx-auto w-full max-w-6xl flex-1 px-4 py-8 outline-none">
       <slot />
     </main>
-    <SiteFooter lang={lang} />
+    {!bare && <SiteFooter lang={lang} />}
   </body>
 </html>
