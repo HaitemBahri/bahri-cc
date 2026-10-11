@@ -1,0 +1,116 @@
+name: release-web
+
+on:
+  push:
+    tags: ["web/v*"]
+
+permissions:
+  id-token: write # GitHub OIDC → bahri-cc-deploy role
+  contents: read
+
+# Shared with release-api.yml: infrastructure deploys queue instead of colliding.
+concurrency:
+  group: bahri-cc-infra
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: eu-west-2
+  CDK: npx -y aws-cdk@2.1144.0
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Old tags are never redeployed: rollback is a revert plus a new patch tag.
+      - name: Check tag
+        run: |
+          tag="$GITHUB_REF_NAME"
+          [[ "$tag" =~ ^web/v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::$tag is not web/vX.Y.Z"; exit 1; }
+          latest=$(git tag --list 'web/v*' --sort=-v:refname | head -1)
+          [[ "$tag" == "$latest" ]] || { echo "::error::$tag is not the latest web/v* tag ($latest)"; exit 1; }
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "::error::$tag is not on main"; exit 1; }
+          echo "VERSION=${tag#web/v}" >> "$GITHUB_ENV"
+
+      - uses: 1password/load-secrets-action@v5
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          AWS_ACCOUNT_ID: op://bahri-cc/aws/account-id
+          HOSTED_ZONE_ID: op://bahri-cc/aws/hosted-zone-id
+          CERTIFICATE_ARN: op://bahri-cc/aws/certificate-arn
+          DEPLOY_ROLE_ARN: op://bahri-cc/aws/deploy-role-arn
+          ALERT_EMAIL: op://bahri-cc/aws/alert-email
+          PREVIEW_TOKEN: op://bahri-cc/preview-token/credential
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: apps/web/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: apps/web/.nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Build site
+        working-directory: apps/web
+        env:
+          PUBLIC_PRELAUNCH: ${{ vars.PUBLIC_PRELAUNCH }}
+        run: |
+          pnpm install --frozen-lockfile
+          # Version from the tag; the committed manifest stays 0.0.0.
+          npm pkg set version="$VERSION"
+          pnpm build
+          echo "CSP_SCRIPT_HASHES=$(node scripts/csp-hashes.mjs)" >> "$GITHUB_ENV"
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: infra/global.json
+
+      # Runs after the build: WebStack reads the page list from apps/web/dist.
+      - name: Deploy WebStack and WebAlarmStack
+        working-directory: infra
+        env:
+          PUBLIC_PRELAUNCH: ${{ vars.PUBLIC_PRELAUNCH }}
+        run: |
+          dotnet restore src/Infra --locked-mode
+          $CDK deploy WebStack --exclusively --require-approval never \
+            -c "cspScriptHashes=$CSP_SCRIPT_HASHES" --outputs-file outputs.json
+          bucket=$(jq -r '.WebStack.BucketName' outputs.json)
+          distribution=$(jq -r '.WebStack.DistributionId' outputs.json)
+          $CDK deploy WebAlarmStack --exclusively --require-approval never -c "distributionId=$distribution"
+          { echo "BUCKET=$bucket"; echo "DISTRIBUTION_ID=$distribution"; } >> "$GITHUB_ENV"
+
+      # Assets first, then pages, then deletions: a failure part-way leaves the previous pages working.
+      - name: Upload site
+        working-directory: apps/web/dist
+        run: |
+          html="public, max-age=0, s-maxage=31536000"
+          aws s3 sync _astro "s3://$BUCKET/_astro" --cache-control "public, max-age=31536000, immutable"
+          aws s3 sync . "s3://$BUCKET" --exclude "*" --include "*.html" --exclude "*/404/index.html" --cache-control "$html"
+          for page in */404/index.html; do
+            aws s3 cp "$page" "s3://$BUCKET/$page" --cache-control "$html" --metadata error-page=true
+          done
+          aws s3 sync . "s3://$BUCKET" --exclude "_astro/*" --exclude "*.html" --cache-control "public, max-age=3600"
+          # Everything is uploaded at its current size, so this only removes files no longer in the build.
+          aws s3 sync . "s3://$BUCKET" --delete --size-only
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
+
+      - name: Summary
+        run: |
+          {
+            echo "### web/v$VERSION released"
+            echo "- Pre-launch: \`${{ vars.PUBLIC_PRELAUNCH }}\`"
+            echo "- Distribution: \`$DISTRIBUTION_ID\`"
+          } >> "$GITHUB_STEP_SUMMARY"
