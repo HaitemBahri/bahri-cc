@@ -6,7 +6,8 @@ sealed record Settings(string AccountId, string HostedZoneId, string AlertEmail,
 {
     public const string Domain = "bahri.cc";
     public const string Region = "eu-west-2";
-    public const string GitHubRepo = "HaitemBahri/bahri-cc";
+    // GitHub's immutable OIDC subject (repo setting use_immutable_subject): owner and repo with their numeric IDs.
+    public const string GitHubSubject = "repo:HaitemBahri@31721768/bahri-cc@1409143487";
     public const string DeployRoleName = "bahri-cc-deploy";
 
     public static Settings FromEnvironment() => new(
