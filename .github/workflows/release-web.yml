@@ -114,3 +114,42 @@ jobs:
             echo "- Pre-launch: \`${{ vars.PUBLIC_PRELAUNCH }}\`"
             echo "- Distribution: \`$DISTRIBUTION_ID\`"
           } >> "$GITHUB_STEP_SUMMARY"
+
+  # Separate job: a Linear failure can be re-run without redeploying.
+  linear:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Find version and previous tag
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#web/v}" >> "$GITHUB_ENV"
+          echo "PREVIOUS_TAG=$(git tag --list 'web/v*' --sort=-v:refname | sed -n 2p)" >> "$GITHUB_ENV"
+
+      - uses: 1password/load-secrets-action@v5
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          LINEAR_ACCESS_KEY: op://bahri-cc/linear/release-access-key
+
+      # Pipeline "bahri-cc web". Paths are set here, not in the pipeline's settings.
+      - uses: linear/linear-release-action@v0
+        with:
+          access_key: ${{ env.LINEAR_ACCESS_KEY }}
+          name: web v${{ env.VERSION }}
+          version: v${{ env.VERSION }}
+          base_ref: ${{ env.PREVIOUS_TAG }}
+          include_paths: apps/web/**,infra/**,.github/workflows/release-web.yml
+          # Commit subjects look like "fix(BUILD-123): ...".
+          issue_pattern: '\(([A-Z]+-\d+)\)'
+          links: GitHub Release=${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}
+
+      - uses: linear/linear-release-action@v0
+        with:
+          access_key: ${{ env.LINEAR_ACCESS_KEY }}
+          command: complete
+          version: v${{ env.VERSION }}

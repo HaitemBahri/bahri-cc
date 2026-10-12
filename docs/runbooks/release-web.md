@@ -8,6 +8,8 @@ Releases are cut through the release flow (version confirmed, then `gh release c
 
 The tag must be `web/vX.Y.Z`, the newest `web/v*` tag, and on `main`; otherwise the run stops before touching AWS.
 
+After a successful deploy the `linear` job records `web vX.Y.Z` in the Linear pipeline `bahri-cc web` and marks it Released, with the issues since the previous `web/v*` tag. Don't create the Linear Release by hand. If only that job fails, re-run it alone.
+
 ## Pre-launch
 
 Repo variable `PUBLIC_PRELAUNCH` (`true` until `web/v1.0.0`; anything but `false` counts as `true`). While on, visitors see the holding page and every response is `noindex`. Preview the real site with `https://bahri.cc/en/?preview=<token>` (1Password `preview-token`); the cookie lasts 30 days.
