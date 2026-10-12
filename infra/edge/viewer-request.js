@@ -53,7 +53,7 @@ function queryString(querystring) {
   for (const key in querystring) {
     const entry = querystring[key];
     const values = entry.multiValue ? entry.multiValue.map((v) => v.value) : [entry.value];
-    for (const value of values) parts.push(value === "" ? key : key + "=" + value);
+    values.forEach((value) => parts.push(value === "" ? key : key + "=" + value));
   }
   return parts.length ? "?" + parts.join("&") : "";
 }
