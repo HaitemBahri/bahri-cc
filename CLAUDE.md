@@ -8,4 +8,5 @@ Architecture: [docs/architecture.md](docs/architecture.md).
 - `apps/web/src/styles/starwind.css` is the single design-token source.
 - RTL: use logical utilities (`ms-`/`me-`/`ps-`/`pe-`, `start`/`end`), not left/right; physical positioning only when the direction must not mirror.
 - Arabic placeholders are marked `TODO-AR`; `pnpm --dir apps/web check:i18n` lists them.
+- `release-web.yml` records the Linear Release; skip the manual `save_release` step of the release flow.
 - Never commit secrets, AWS IDs or personal addresses; use `op://bahri-cc/...` references (`infra/.env.example`).

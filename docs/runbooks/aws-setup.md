@@ -10,6 +10,7 @@ CDK CLI: `npx -y aws-cdk@2.1144.0` (shortened to `cdk` below). Run from `infra/`
 2. Add items:
    - `aws` with fields `account-id`, `hosted-zone-id` (the existing `bahri.cc` zone), `alert-email` (where budget and alarm emails go), `certificate-arn` (placeholder until step 3), `deploy-role-arn` (placeholder until step 3)
    - `preview-token` with field `credential` (a long random string)
+   - `linear` with field `release-access-key` (access key of the Linear pipeline `bahri-cc web`, from its settings page)
 3. Create service account `bahri-cc-ci` with **read-only** access to `bahri-cc` only. Save its token in the vault, then:
 
    ```sh
