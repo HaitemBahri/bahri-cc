@@ -35,3 +35,19 @@ jobs:
       - run: pnpm check:meta
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+      - run: pnpm test:lighthouse
+      # Links to pages listed in tests/pending.ts are skipped until those pages are built.
+      - name: List pending routes
+        id: pending
+        run: node --input-type=module -e 'const { pending } = await import("./tests/pending.ts"); console.log("exclude=" + pending.routes.map((r) => "--exclude " + r + "?$").join(" "))' >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v6
+        with:
+          path: apps/web/.lycheecache
+          key: lychee-${{ github.sha }}
+          restore-keys: lychee-
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          workingDirectory: apps/web
+          args: >-
+            --root-dir ${{ github.workspace }}/apps/web/dist --no-progress --cache --max-cache-age 1d
+            ${{ steps.pending.outputs.exclude }} 'dist/**/*.html'
