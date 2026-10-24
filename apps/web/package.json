@@ -14,7 +14,8 @@
     "astro": "astro",
     "check": "astro check",
     "check:i18n": "node scripts/check-i18n.mjs",
-    "test:e2e": "playwright test --project=qa"
+    "test:e2e": "playwright test --project=qa",
+    "check:meta": "node scripts/check-meta.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
