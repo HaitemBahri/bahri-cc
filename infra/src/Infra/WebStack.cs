@@ -118,10 +118,11 @@ sealed class WebStack : Stack
             new AaaaRecord(this, $"{name}Aaaa", new AaaaRecordProps { Zone = zone, RecordName = recordName, Target = target });
         }
 
-        // The release workflow uploads with `aws s3 sync --delete` and invalidates the cache.
+        // The release workflow uploads with `aws s3 sync --delete`, invalidates the cache and waits for it before the smoke tests.
         var deployRole = Role.FromRoleName(this, "DeployRole", Settings.DeployRoleName);
         bucket.GrantReadWrite(deployRole);
         distribution.GrantCreateInvalidation(deployRole);
+        distribution.Grant(deployRole, "cloudfront:GetInvalidation");
 
         // Read by ApiStack for the Lambda OAC permission (no cross-stack exports).
         new StringParameter(this, "DistributionArnParameter", new StringParameterProps
