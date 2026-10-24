@@ -105,7 +105,9 @@ jobs:
           aws s3 sync . "s3://$BUCKET" --delete --size-only
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
+        run: |
+          id=$(aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*" --query Invalidation.Id --output text)
+          aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" --id "$id"
 
       - name: Summary
         run: |
@@ -114,6 +116,16 @@ jobs:
             echo "- Pre-launch: \`${{ vars.PUBLIC_PRELAUNCH }}\`"
             echo "- Distribution: \`$DISTRIBUTION_ID\`"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # Last, after the cache invalidation: checks the live site. PREVIEW_TOKEN comes from load-secrets-action.
+      - name: Smoke test
+        working-directory: apps/web
+        env:
+          SMOKE_BASE_URL: https://bahri.cc
+          PUBLIC_PRELAUNCH: ${{ vars.PUBLIC_PRELAUNCH }}
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          pnpm test:smoke
 
   # Separate job: a Linear failure can be re-run without redeploying.
   linear:

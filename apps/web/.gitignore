@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# QA reports and caches
+test-results/
+playwright-report/
+.lighthouseci/
+.lycheecache
