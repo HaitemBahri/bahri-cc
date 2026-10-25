@@ -1,0 +1,60 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import { Button } from "@/components/starwind/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/starwind/card";
+import { icons } from "@/config/icons";
+import { pageHref } from "@/config/nav";
+import { langs, t, type Lang } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const label = t(lang);
+const page = await getEntry("pages", `${lang}/services`);
+if (!page) throw new Error(`Missing content: pages/${lang}/services.md`);
+
+const entries = await getCollection("services", (entry) => entry.id.startsWith(`${lang}/`));
+const services = await Promise.all(
+  entries
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (entry) => ({ ...entry.data, Content: (await render(entry)).Content })),
+);
+---
+
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
+  <h1 class="py-8 text-4xl font-semibold md:pt-16 md:text-5xl">{label("nav.services")}</h1>
+
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      services.map(({ title, summary, icon, Content }) => {
+        const Icon = icon && icons[icon];
+        return (
+          <li>
+            <Card class="h-full">
+              <CardHeader>
+                {Icon && <Icon class="text-primary-accent mb-2 size-8" aria-hidden="true" />}
+                <CardTitle>
+                  <h2>{title}</h2>
+                </CardTitle>
+                <CardDescription>{summary}</CardDescription>
+              </CardHeader>
+              <CardContent class="[&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:ps-5">
+                <Content />
+              </CardContent>
+            </Card>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  {
+    page.data.cta && (
+      <section class="mt-16 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <p class="text-xl font-medium">{page.data.cta.text}</p>
+        <Button href={pageHref(lang, "contact")}>{label("button.contact")}</Button>
+      </section>
+    )
+  }
+</BaseLayout>
