@@ -1,15 +1,65 @@
 ---
 import { getEntry } from "astro:content";
-import { langs, type Lang } from "@/i18n/ui";
+import { Badge } from "@/components/starwind/badge";
+import { Button } from "@/components/starwind/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/starwind/card";
+import { pageHref } from "@/config/nav";
+import { langs, t, type Lang, type UIKey } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
 
 const lang = Astro.params.lang as Lang;
+const label = t(lang);
 const page = await getEntry("pages", `${lang}/home`);
 if (!page) throw new Error(`Missing content: pages/${lang}/home.md`);
+const { title, description, heading, intro, skills = [], links = [], cta } = page.data;
 ---
 
-<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
-  <h1>{page.data.title}</h1>
+<BaseLayout lang={lang} title={title} description={description}>
+  <section class="max-w-3xl py-8 md:py-16">
+    <h1 class="text-4xl font-semibold text-balance md:text-5xl">{heading}</h1>
+    <p class="text-muted-foreground mt-6 text-lg">{intro}</p>
+    <ul class="mt-8 flex flex-wrap gap-2">
+      {
+        skills.map((skill) => (
+          <li>
+            <Badge tone="primary-accent" appearance="soft">
+              {skill}
+            </Badge>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      links.map(({ slug, audience, text }) => (
+        <li>
+          <a
+            href={pageHref(lang, slug)}
+            class="block h-full rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-outline"
+          >
+            <Card class="hover:ring-primary-accent h-full transition-shadow">
+              <CardHeader>
+                <p class="text-muted-foreground text-sm">{audience}</p>
+                <CardTitle>{label(`nav.${slug}` as UIKey)}</CardTitle>
+                <CardDescription>{text}</CardDescription>
+              </CardHeader>
+            </Card>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    cta && (
+      <section class="mt-16 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <p class="text-xl font-medium">{cta.text}</p>
+        <Button href={pageHref(lang, "contact")}>{label("button.contact")}</Button>
+      </section>
+    )
+  }
 </BaseLayout>
