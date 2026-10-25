@@ -8,6 +8,12 @@ const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    // Home page only.
+    heading: z.string().optional(),
+    intro: z.string().optional(),
+    skills: z.array(z.string()).optional(),
+    links: z.array(z.object({ slug: z.string(), audience: z.string(), text: z.string() })).optional(),
+    cta: z.object({ text: z.string() }).optional(),
   }),
 });
 
