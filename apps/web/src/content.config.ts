@@ -52,4 +52,16 @@ const roadmap = defineCollection({
   }),
 });
 
-export const collections = { pages, experience, roadmap };
+// Entry ids are "<lang>/<service>"; body = the service's bullet list.
+const services = defineCollection({
+  loader: glob({ pattern: "{en,ar}/*.md", base: "./src/content/services" }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    order: z.number(),
+    // Name from src/config/icons.ts.
+    icon: z.enum(["bulb", "devices", "school"]).optional(),
+  }),
+});
+
+export const collections = { pages, experience, roadmap, services };
