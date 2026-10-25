@@ -17,4 +17,13 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { pages };
+// Entry ids are "<lang>/<role id>"; untranslated facts live in src/data/experience.json.
+const experience = defineCollection({
+  loader: glob({ pattern: "{en,ar}/*.md", base: "./src/content/experience" }),
+  schema: z.object({
+    title: z.string(),
+    location: z.string(),
+  }),
+});
+
+export const collections = { pages, experience };

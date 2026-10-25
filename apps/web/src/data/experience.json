@@ -1,0 +1,6 @@
+[
+  { "id": "ghirza", "company": "Ghirza", "start": "2026-10" },
+  { "id": "freelance", "start": "2023-06", "end": "2026-10" },
+  { "id": "laptech", "company": "Laptech For ICT Services", "start": "2017-12", "end": "2023-05" },
+  { "id": "bani-walid", "company": "College of Electronic Technology, Bani Walid", "start": "2013-09", "end": "2017-12" }
+]

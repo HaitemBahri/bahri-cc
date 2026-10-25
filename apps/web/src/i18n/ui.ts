@@ -44,6 +44,15 @@ const en = {
   "error.send_failed": "Your message couldn't be sent. Please try again later.",
   "error.unavailable": "The form is temporarily unavailable. Please try again later.",
   "error.network": "Couldn't reach the server. Check your connection and try again.",
+  "experience.present": "Present",
+  "experience.stack": "Stack",
+  "stack.backend": "Backend",
+  "stack.frontend": "Frontend",
+  "stack.mobile": "Mobile",
+  "stack.desktop": "Desktop",
+  "stack.iot": "IoT",
+  "stack.persistence": "Persistence",
+  "stack.cloud": "Cloud",
 } as const;
 
 export type UIKey = keyof typeof en;
@@ -88,6 +97,15 @@ const ar: Record<UIKey, string> = {
   "error.send_failed": "TODO-AR Your message couldn't be sent. Please try again later.",
   "error.unavailable": "TODO-AR The form is temporarily unavailable. Please try again later.",
   "error.network": "TODO-AR Couldn't reach the server. Check your connection and try again.",
+  "experience.present": "TODO-AR Present",
+  "experience.stack": "TODO-AR Stack",
+  "stack.backend": "TODO-AR Backend",
+  "stack.frontend": "TODO-AR Frontend",
+  "stack.mobile": "TODO-AR Mobile",
+  "stack.desktop": "TODO-AR Desktop",
+  "stack.iot": "TODO-AR IoT",
+  "stack.persistence": "TODO-AR Persistence",
+  "stack.cloud": "TODO-AR Cloud",
 };
 
 const ui: Record<Lang, Record<UIKey, string>> = { en, ar };

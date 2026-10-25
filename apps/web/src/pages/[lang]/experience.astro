@@ -1,0 +1,74 @@
+---
+import { getEntry, render } from "astro:content";
+import ExperienceTimeline from "@/components/ExperienceTimeline.astro";
+import { Badge } from "@/components/starwind/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/starwind/card";
+import stack from "@/data/stack.json";
+import { getRoles } from "@/lib/experience";
+import { langs, t, type Lang, type UIKey } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const label = t(lang);
+const page = await getEntry("pages", `${lang}/experience`);
+if (!page) throw new Error(`Missing content: pages/${lang}/experience.md`);
+const { Content } = await render(page);
+const roles = await getRoles(lang);
+
+// Categories in display order, each with its technologies from stack.json.
+const categories = [...new Set(stack.map((tech) => tech.category))].map((category) => ({
+  category,
+  techs: stack.filter((tech) => tech.category === category),
+}));
+---
+
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
+  <h1 class="py-8 text-4xl font-semibold md:pt-16 md:text-5xl">{label("nav.experience")}</h1>
+
+  <ExperienceTimeline lang={lang} roles={roles} />
+
+  <section class="mt-16">
+    <h2 class="text-2xl font-semibold">{label("experience.stack")}</h2>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        categories.map(({ category, techs }) => (
+          <li>
+            <Card class="h-full" size="sm">
+              <CardHeader>
+                <CardTitle>{label(`stack.${category}` as UIKey)}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul class="space-y-3">
+                  {techs.map((tech) => (
+                    <li>
+                      <p class="font-medium">
+                        <bdi dir="ltr">{tech.name}</bdi>
+                      </p>
+                      <ul class="mt-1 flex flex-wrap gap-1.5">
+                        {tech.minors.map((minor) => (
+                          <li>
+                            <Badge tone="primary-accent" appearance="soft" size="sm" dir="ltr">
+                              {minor}
+                            </Badge>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section
+    class="mt-16 [&_h2]:text-2xl [&_h2]:font-semibold [&_ul]:mt-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:ps-5 [&_em]:text-muted-foreground"
+  >
+    <Content />
+  </section>
+</BaseLayout>
