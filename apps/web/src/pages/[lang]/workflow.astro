@@ -1,0 +1,22 @@
+---
+import { getEntry, render } from "astro:content";
+import { langs, t, type Lang } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const page = await getEntry("pages", `${lang}/workflow`);
+if (!page) throw new Error(`Missing content: pages/${lang}/workflow.md`);
+const { Content } = await render(page);
+---
+
+<!-- Coming-soon placeholder, kept out of search until the real page lands (follow-up to BUILD-1393). -->
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description} noindex>
+  <article class="max-w-3xl py-8 md:py-16">
+    <h1 class="text-4xl font-semibold md:text-5xl">{t(lang)("nav.workflow")}</h1>
+    <div class="[&_p]:text-muted-foreground [&_p]:mt-6 [&_p]:text-lg">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
