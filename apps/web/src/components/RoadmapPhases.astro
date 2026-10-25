@@ -1,0 +1,32 @@
+---
+interface Props {
+  phases: { id: string; title: string; period: string; summary: string }[];
+}
+
+const { phases } = Astro.props;
+---
+
+<!-- Vertical list with a start-side line below lg; a numbered grid from lg up. Logical utilities, so RTL flips the order. -->
+<ol class="border-border ms-4 grid gap-4 border-s lg:ms-0 lg:grid-cols-4 lg:border-s-0">
+  {
+    phases.map((phase, i) => (
+      <li class="relative ps-8 lg:ps-0">
+        <span
+          class="bg-primary-accent text-background absolute -start-4 top-3 flex size-8 items-center justify-center rounded-full text-sm font-semibold lg:static lg:mb-3"
+          aria-hidden="true"
+        >
+          {i + 1}
+        </span>
+        <a
+          href={`#${phase.id}`}
+          class="ring-border hover:ring-primary-accent block rounded-xl p-4 ring-1 transition-shadow outline-none focus-visible:ring-3 focus-visible:ring-outline lg:h-[calc(100%-2.75rem)]"
+        >
+          <span class="sr-only">{i + 1}. </span>
+          <span class="block font-semibold">{phase.title}</span>
+          <span class="text-muted-foreground mt-1 block text-sm">{phase.period}</span>
+          <span class="mt-2 block text-sm">{phase.summary}</span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
