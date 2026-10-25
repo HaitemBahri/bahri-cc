@@ -1,0 +1,14 @@
+[
+  { "name": "ASP.NET Core", "category": "backend", "minors": ["C#", "Minimal APIs", "Controller APIs", "Razor Pages"] },
+  { "name": "Vue", "category": "frontend", "minors": ["TypeScript", "Nuxt"] },
+  { "name": "Astro", "category": "frontend", "minors": ["TypeScript"] },
+  { "name": "Flutter", "category": "mobile", "minors": ["Dart"] },
+  { "name": "Avalonia", "category": "desktop", "minors": ["C#"] },
+  { "name": "Tauri", "category": "desktop", "minors": ["Rust"] },
+  { "name": "AVR microcontrollers", "category": "iot", "minors": ["C", "C++"] },
+  { "name": "Raspberry Pi", "category": "iot", "minors": ["C#"] },
+  { "name": "PostgreSQL", "category": "persistence", "minors": ["EF Core"] },
+  { "name": "SQLite", "category": "persistence", "minors": ["EF Core"] },
+  { "name": "AWS", "category": "cloud", "minors": ["AWS CDK (C#)"] },
+  { "name": "GitHub", "category": "cloud", "minors": ["GitHub Actions", "GitHub Packages"] }
+]
