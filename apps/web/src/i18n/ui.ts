@@ -53,6 +53,7 @@ const en = {
   "stack.iot": "IoT",
   "stack.persistence": "Persistence",
   "stack.cloud": "Cloud",
+  "roadmap.prose": "Read the full story",
 } as const;
 
 export type UIKey = keyof typeof en;
@@ -106,6 +107,7 @@ const ar: Record<UIKey, string> = {
   "stack.iot": "TODO-AR IoT",
   "stack.persistence": "TODO-AR Persistence",
   "stack.cloud": "TODO-AR Cloud",
+  "roadmap.prose": "TODO-AR Read the full story",
 };
 
 const ui: Record<Lang, Record<UIKey, string>> = { en, ar };

@@ -1,0 +1,389 @@
+{
+  "phases": [
+    {
+      "id": "foundations",
+      "title": "TODO-AR Foundations",
+      "period": "TODO-AR Until 2013",
+      "summary": "TODO-AR Learning to code, from first lines in high school through university and independent study.",
+      "overview": "TODO-AR Learning to code, from first programs in high school through university and independent study.",
+      "sections": [
+        {
+          "heading": "TODO-AR Education",
+          "items": [
+            {
+              "label": "TODO-AR High school (UK)",
+              "text": "TODO-AR Computing Studies; learned Visual Basic and wrote my first programs"
+            },
+            {
+              "label": "TODO-AR BSc Mechatronics Engineering",
+              "text": "TODO-AR International Islamic University Malaysia (UIAM), Kuala Lumpur",
+              "items": [
+                {
+                  "text": "TODO-AR Focus on embedded software and modelling"
+                },
+                {
+                  "text": "TODO-AR Learned C and C++, picked up MATLAB, continued with Visual Basic"
+                }
+              ]
+            },
+            {
+              "label": "TODO-AR Self-taught",
+              "text": "TODO-AR C#, building console and desktop applications"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Fundamentals",
+          "items": [
+            {
+              "text": "TODO-AR Object-oriented programming"
+            },
+            {
+              "text": "TODO-AR Algorithms"
+            },
+            {
+              "text": "TODO-AR Computer architecture"
+            },
+            {
+              "text": "TODO-AR Digital logic"
+            },
+            {
+              "text": "TODO-AR Software engineering principles"
+            },
+            {
+              "text": "TODO-AR Mathematics"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Skills & technologies",
+          "items": [
+            {
+              "label": "TODO-AR Languages",
+              "text": "TODO-AR Visual Basic, C, C++, MATLAB, C#"
+            },
+            {
+              "label": "TODO-AR Application types",
+              "text": "TODO-AR console and desktop applications"
+            },
+            {
+              "text": "TODO-AR Understanding of software from the hardware up"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Transition",
+          "items": [
+            {
+              "text": "TODO-AR Self-taught C# became the starting point for my .NET career"
+            },
+            {
+              "text": "TODO-AR Phase ended in 2013, moving into my first role as a lab engineer"
+            }
+          ]
+        }
+      ],
+      "prose": [
+        "TODO-AR My first experience of programming came in high school, through the computing studies subject. That is where I learned Visual Basic and used it to write my first programs.",
+        "TODO-AR At university, I earned a BSc in Mechatronics Engineering at the International Islamic University Malaysia (UIAM) in Kuala Lumpur, focusing on embedded software and modelling. My programming grew alongside my engineering studies. I learned C and C++, picked up MATLAB, and continued building on Visual Basic.",
+        "TODO-AR Alongside the languages, I built a solid grounding in the fundamentals of computing. This covered object-oriented programming, algorithms, computer architecture, digital logic, software engineering principles, and the mathematics that underpins them. These foundations gave me an understanding of how software works from the hardware up, not just how to write it.",
+        "TODO-AR Outside my formal studies, I taught myself C#, using it to build console and desktop applications. This self-directed learning became the starting point for the .NET work that followed in my career."
+      ]
+    },
+    {
+      "id": "embedded-roots",
+      "title": "TODO-AR Embedded Roots",
+      "period": "TODO-AR Sep 2013 – Dec 2017",
+      "summary": "TODO-AR First employer; embedded systems and .NET software development.",
+      "overview": "TODO-AR First professional role, building complete measurement and control systems combining desktop software and embedded hardware.",
+      "sections": [
+        {
+          "heading": "TODO-AR Roles",
+          "items": [
+            {
+              "label": "TODO-AR Lab Engineer, College of Electronic Technology, Bani Walid (Sep 2013 – Dec 2017, full-time)",
+              "items": [
+                {
+                  "text": "TODO-AR Designed and built lab experiments used to teach students"
+                },
+                {
+                  "text": "TODO-AR Experiments developed in-house instead of paying for LabVIEW licences"
+                }
+              ]
+            },
+            {
+              "label": "TODO-AR Junior Software Engineer (from 2016, part-time, second company)",
+              "items": [
+                {
+                  "text": "TODO-AR .NET development: mainly WPF desktop applications, some ASP.NET"
+                },
+                {
+                  "text": "TODO-AR First exposure to web back-end development"
+                }
+              ]
+            },
+            {
+              "label": "TODO-AR Freelance (alongside employment)",
+              "items": [
+                {
+                  "text": "TODO-AR WPF desktop applications for clients"
+                },
+                {
+                  "text": "TODO-AR Early experience delivering software to external users"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Key projects",
+          "items": [
+            {
+              "label": "TODO-AR Lab experiments",
+              "text": "TODO-AR 7–10 built, each made of three parts",
+              "items": [
+                {
+                  "text": "TODO-AR WPF desktop app (C#, .NET Framework): configuration, real-time graphing, performance analysis, exporting results"
+                },
+                {
+                  "text": "TODO-AR Hardware controller (microcontroller or Arduino): sensor reading, control loops, actuator driving"
+                },
+                {
+                  "text": "TODO-AR Serial port link between the two"
+                }
+              ]
+            },
+            {
+              "label": "TODO-AR Glass workshop POS",
+              "text": "TODO-AR point-of-sale application (junior role)"
+            },
+            {
+              "label": "TODO-AR Laundry POS",
+              "text": "TODO-AR point-of-sale system (freelance)"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Skills & technologies",
+          "items": [
+            {
+              "label": "TODO-AR Languages & frameworks",
+              "text": "TODO-AR C#, WPF, .NET Framework, ASP.NET, Arduino C/C++"
+            },
+            {
+              "label": "TODO-AR Hardware",
+              "text": "TODO-AR microcontrollers, Arduino, motors, sensors, drivers, limit switches"
+            },
+            {
+              "label": "TODO-AR Communication",
+              "text": "TODO-AR serial (USB/COM) protocols"
+            },
+            {
+              "label": "TODO-AR Control",
+              "text": "TODO-AR PID control, PWM power regulation, motion profiles (acceleration/deceleration)"
+            },
+            {
+              "label": "TODO-AR Safety",
+              "text": "TODO-AR emergency stops, overheating protection"
+            },
+            {
+              "label": "TODO-AR Tools & practices",
+              "text": "TODO-AR Git, GitHub, everyday professional development tools and practices"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Transition",
+          "items": [
+            {
+              "text": "TODO-AR Wanted to focus more on software development beyond embedded systems"
+            },
+            {
+              "text": "TODO-AR Moved to Laptech as a full-time software engineer in Dec 2017"
+            }
+          ]
+        }
+      ],
+      "prose": [
+        "TODO-AR My first role was as a lab engineer, where most of my time went into designing and building lab experiments used to teach students. Rather than pay for LabVIEW licences, management chose to have the experiments developed in-house, and that decision put me in the position of building complete measurement and control systems myself.",
+        "TODO-AR Over those years I built between seven and ten experiments. Each experiment combined three parts: a WPF desktop application in C# on the .NET Framework, a hardware controller (either a microcontroller or an Arduino), and the serial port link between them. The desktop app handled configuration, real-time graphing, performance analysis and exporting results, while the firmware read sensors, ran the control loops and drove the actuators.",
+        "TODO-AR This meant working across the full stack of a physical system: desktop UI, serial communication protocols, embedded firmware in C/C++, and the electronics underneath, including motors, sensors, drivers and limit switches. Along the way I implemented PID control, PWM-based power regulation, motion profiles with acceleration and deceleration, and safety features such as emergency stops and overheating protection.",
+        "TODO-AR This was also the phase where I picked up the everyday tools and practices of professional software development. I learned version control with Git and GitHub, along with the common applications and working practices that developers rely on day to day, turning coding into a disciplined engineering process rather than just writing programs.",
+        "TODO-AR From 2016, I also worked part-time as a junior software engineer at a second company, alongside my lab engineer role. The work was in .NET, mainly WPF desktop applications, with some ASP.NET, which gave me my first exposure to web back-end development. One of the systems I built there was a point-of-sale application for a glass workshop.",
+        "TODO-AR Alongside my role, I also took on freelance work, developing desktop applications in WPF for clients, such as a point-of-sale system for a laundry business. This gave me early experience of building software for external users and delivering projects outside an employer's setting."
+      ]
+    },
+    {
+      "id": "full-systems",
+      "title": "TODO-AR Full Systems",
+      "period": "TODO-AR Dec 2017 – May 2023",
+      "summary": "TODO-AR Second employer; end-to-end systems development.",
+      "overview": "TODO-AR Full-time software engineer at Laptech, growing from device-based solutions to complete end-to-end systems.",
+      "sections": [
+        {
+          "heading": "TODO-AR Roles",
+          "items": [
+            {
+              "label": "TODO-AR Software Engineer, Laptech For ICT Services (Dec 2017 – May 2023, full-time)",
+              "items": [
+                {
+                  "text": "TODO-AR Joined to focus more on software development beyond embedded systems"
+                },
+                {
+                  "text": "TODO-AR Worked in a team, responsible for a major portion of design and implementation"
+                },
+                {
+                  "label": "TODO-AR Progression",
+                  "text": "TODO-AR desktop + hardware solutions with my own firmware, then back-end development with ASP.NET for a couple of years, then full-stack developer after mastering Vue and Nuxt"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Key projects",
+          "items": [
+            {
+              "label": "TODO-AR FAAC access control add-on",
+              "text": "TODO-AR desktop application controlling an access control system built on FAAC equipment through a microcontroller"
+            },
+            {
+              "label": "TODO-AR COVID quarantine management system",
+              "text": "TODO-AR ASP.NET API back end, desktop application front end, SQL Server database, hosted on Azure"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Education",
+          "items": [
+            {
+              "label": "TODO-AR MSc Mechatronics Engineering",
+              "text": "TODO-AR University of Glasgow (2020–2021), studied while working for Laptech remotely"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Skills & technologies",
+          "items": [
+            {
+              "label": "TODO-AR Languages & frameworks",
+              "text": "TODO-AR C#, WPF, ASP.NET, Vue, Nuxt"
+            },
+            {
+              "label": "TODO-AR Embedded",
+              "text": "TODO-AR firmware (C/C++), microcontrollers"
+            },
+            {
+              "label": "TODO-AR Data",
+              "text": "TODO-AR SQL Server"
+            },
+            {
+              "label": "TODO-AR Cloud",
+              "text": "TODO-AR Azure"
+            },
+            {
+              "label": "TODO-AR Scope",
+              "text": "TODO-AR full-stack, from database and back end through to the user interface"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Transition",
+          "items": [
+            {
+              "text": "TODO-AR In 2023 Laptech required all employees to return to the office"
+            },
+            {
+              "text": "TODO-AR Being based in the UK, I couldn't, so I left and started working independently"
+            }
+          ]
+        }
+      ],
+      "prose": [
+        "TODO-AR This phase began when I joined Laptech as a full-time software engineer. I made the move because I wanted to focus more on software development beyond embedded systems.",
+        "TODO-AR My early work there built directly on my lab engineering experience. I developed solutions that combined desktop applications with hardware running firmware I had written, much like my lab experiments. The difference was the purpose: instead of teaching experiments, these were solutions to real problems our clients faced. One example was an add-on for an access control system built on FAAC equipment, made up of a desktop application that controlled the system through a microcontroller.",
+        "TODO-AR From there I moved into back-end development, spending a couple of years building with ASP.NET. This shifted my focus from devices and desktop apps to servers, APIs and data. A key project from this period was a COVID quarantine management system, built with an ASP.NET API back end, a desktop application as the front end, and a SQL Server database, hosted on Azure.",
+        "TODO-AR After mastering Vue and Nuxt on the front end, I became a full-stack developer, able to take a system from the database and back end through to the user interface. Across the phase, my work grew from single devices to complete systems end to end. Throughout my time at Laptech I worked as part of a team, while being responsible for a major portion of the design and implementation.",
+        "TODO-AR During this phase I also completed an MSc in Mechatronics Engineering at the University of Glasgow (2020–2021), studying while continuing to work for Laptech remotely.",
+        "TODO-AR The phase came to an end in 2023, when Laptech asked all employees to return to the office. As I was by then based in the UK, that wasn't possible, so I left and took the opportunity to start working independently."
+      ]
+    },
+    {
+      "id": "going-independent",
+      "title": "TODO-AR Going Independent",
+      "period": "TODO-AR 2023 – present",
+      "summary": "TODO-AR Freelance work, then working through my own company.",
+      "overview": "TODO-AR Independent work: freelance projects alongside a full-time non-tech job, then my own company.",
+      "sections": [
+        {
+          "heading": "TODO-AR Roles",
+          "items": [
+            {
+              "label": "TODO-AR Freelance developer (2023 – 2026)",
+              "items": [
+                {
+                  "text": "TODO-AR Projects taken on alongside a full-time job outside tech"
+                },
+                {
+                  "text": "TODO-AR Mostly full-stack web development, with a little embedded software"
+                },
+                {
+                  "text": "TODO-AR Contract with DataAnnotation (Jun 2023 – Feb 2024): C# developer helping to train AI models"
+                }
+              ]
+            },
+            {
+              "label": "TODO-AR Founder, Ghirza (2026 – present)",
+              "items": [
+                {
+                  "text": "TODO-AR Solutions for clients that need software, hardware, or both, including web, desktop and mobile applications"
+                },
+                {
+                  "text": "TODO-AR Plans to build its own products in the future"
+                },
+                {
+                  "text": "TODO-AR Why a company: simpler billing and more customer trust than freelancing as an individual"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Skills & technologies",
+          "items": [
+            {
+              "label": "TODO-AR Languages & frameworks",
+              "text": "TODO-AR C#, ASP.NET, Vue, Nuxt"
+            },
+            {
+              "label": "TODO-AR Embedded",
+              "text": "TODO-AR embedded C/C++"
+            },
+            {
+              "label": "TODO-AR Mobile",
+              "text": "TODO-AR Flutter, Dart (new in this phase)"
+            },
+            {
+              "label": "TODO-AR Scope",
+              "text": "TODO-AR full-stack web and cross-platform mobile, with some embedded work"
+            }
+          ]
+        },
+        {
+          "heading": "TODO-AR Next",
+          "items": [
+            {
+              "text": "TODO-AR Ghirza plans to build its own products in the future"
+            }
+          ]
+        }
+      ],
+      "prose": [
+        "TODO-AR This phase began when I started taking on projects as a freelancer, while working a full-time job outside tech. Building software alongside a non-tech role meant fitting development around a demanding schedule, and it kept my skills moving forward on my own terms.",
+        "TODO-AR One of my early engagements in this phase was contract work with DataAnnotation in 2023, where I worked as a C# developer helping to train AI models.",
+        "TODO-AR At first I worked with the same stack I had built up in my previous roles. The projects I delivered spanned the full range of my experience: embedded software for hardware-based solutions, and full-stack web development across back end and front end. I also expanded into mobile development, learning Flutter to build cross-platform apps.",
+        "TODO-AR This freelance work laid the groundwork for the next step: starting my own company, Ghirza, in 2026. Working through a company makes billing simpler and earns more trust from customers than working as an individual freelancer. Ghirza develops solutions for clients, with plans to build its own products in the future. Its focus is on solutions that need software, hardware, or both, including web, desktop and mobile applications, bringing together everything I have built up across my career. The technology stack carries over from my freelance work."
+      ]
+    }
+  ]
+}
