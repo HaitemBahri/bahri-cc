@@ -1,0 +1,135 @@
+---
+import { getEntry } from "astro:content";
+import AlertCircle from "@tabler/icons/outline/alert-circle.svg";
+import BrandGithub from "@tabler/icons/outline/brand-github.svg";
+import BrandLinkedin from "@tabler/icons/outline/brand-linkedin.svg";
+import Mail from "@tabler/icons/outline/mail.svg";
+import { Button } from "@/components/starwind/button";
+import { Input } from "@/components/starwind/input";
+import { Label } from "@/components/starwind/label";
+import { Textarea } from "@/components/starwind/textarea";
+import { contact, pageHref } from "@/config/nav";
+import { langs, t, type Lang } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const label = t(lang);
+const page = await getEntry("pages", `${lang}/contact`);
+if (!page) throw new Error(`Missing content: pages/${lang}/contact.md`);
+
+const link =
+  "text-primary-accent rounded-sm underline-offset-4 hover:underline outline-none focus-visible:ring-3 focus-visible:ring-outline";
+const links = [
+  { href: `mailto:${contact.email}`, text: contact.email, Icon: Mail },
+  { href: contact.linkedin, text: "LinkedIn", Icon: BrandLinkedin },
+  { href: contact.github, text: "GitHub", Icon: BrandGithub },
+];
+
+// Limits match the contact API (BUILD-1398).
+const fields = [
+  { name: "name", type: "text", autocomplete: "name", maxlength: 100 },
+  { name: "email", type: "email", autocomplete: "email", maxlength: 254 },
+  { name: "message", minlength: 10, maxlength: 5000 },
+] as const;
+
+// Localized messages for the validation script, keyed by ValidityState flag.
+const messages = {
+  valueMissing: label("field.required"),
+  typeMismatch: label("field.invalid_email"),
+  tooShort: label("field.too_short"),
+  tooLong: label("field.too_long"),
+};
+---
+
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
+  <h1 class="pt-8 text-4xl font-semibold md:pt-16 md:text-5xl">{label("nav.contact")}</h1>
+
+  <div class="grid gap-12 py-8 lg:grid-cols-[1fr_2fr]">
+    <section class="space-y-6">
+      {page.data.intro && <p class="text-lg">{page.data.intro}</p>}
+      {page.data.availability && <p class="text-muted-foreground">{page.data.availability}</p>}
+      <ul class="space-y-3">
+        {
+          links.map(({ href, text, Icon }) => (
+            <li class="flex items-center gap-2">
+              <Icon class="text-muted-foreground size-5 shrink-0" aria-hidden="true" />
+              <a href={href} class={link} dir="ltr">{text}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <form id="contact-form" class="space-y-6" novalidate data-messages={JSON.stringify(messages)}>
+      {
+        fields.map((field) => {
+          const error = `${field.name}-error`;
+          const common = { id: field.name, name: field.name, required: true, maxlength: field.maxlength };
+          return (
+            <div class="space-y-2">
+              <Label for={field.name}>{label(`form.${field.name}`)}</Label>
+              {field.name === "message" ? (
+                <Textarea {...common} minlength={field.minlength} rows={6} />
+              ) : (
+                <Input {...common} type={field.type} autocomplete={field.autocomplete} />
+              )}
+              <p id={error} class="flex items-center gap-1.5 text-sm" hidden>
+                <AlertCircle class="text-error size-4 shrink-0" aria-hidden="true" />
+                <span data-error-text />
+              </p>
+            </div>
+          );
+        })
+      }
+
+      <!-- Turnstile widget mounts here (BUILD-1401). -->
+      <div id="turnstile-widget"></div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <Button type="submit" disabled>{label("form.submit")}</Button>
+        <a href={pageHref(lang, "privacy")} class={`text-sm ${link}`}>{label("footer.privacy")}</a>
+      </div>
+      <p class="text-muted-foreground text-sm">
+        {label("contact.soon")}{" "}
+        <a href={`mailto:${contact.email}`} class={`underline ${link}`} dir="ltr">{contact.email}</a>
+      </p>
+    </form>
+  </div>
+</BaseLayout>
+
+<script>
+  // Inline validation only: the form never sends until BUILD-1401 connects the API.
+  const form = document.querySelector<HTMLFormElement>("#contact-form");
+  if (form) {
+    const messages: Record<string, string> = JSON.parse(form.dataset.messages ?? "{}");
+    const flags = ["valueMissing", "typeMismatch", "tooShort", "tooLong"] as const;
+
+    const validate = (control: HTMLInputElement | HTMLTextAreaElement) => {
+      const error = document.getElementById(`${control.id}-error`);
+      if (!error) return;
+      const flag = flags.find((f) => control.validity[f]);
+      error.hidden = !flag;
+      error.querySelector("[data-error-text]")!.textContent = flag ? messages[flag] : "";
+      if (flag) {
+        control.setAttribute("aria-invalid", "true");
+        control.setAttribute("aria-describedby", error.id);
+        control.setAttribute("data-error-visible", "");
+      } else {
+        control.removeAttribute("aria-invalid");
+        control.removeAttribute("aria-describedby");
+        control.removeAttribute("data-error-visible");
+      }
+    };
+
+    for (const control of form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input, textarea")) {
+      control.addEventListener("blur", () => validate(control));
+      control.addEventListener("input", () => {
+        if (control.hasAttribute("aria-invalid")) validate(control);
+      });
+    }
+
+    form.addEventListener("submit", (event) => event.preventDefault());
+  }
+</script>

@@ -14,6 +14,7 @@ export const navItems = [
 export const contact = {
   email: "me@bahri.cc",
   github: "https://github.com/HaitemBahri",
+  linkedin: "https://www.linkedin.com/in/haitembahri/",
 };
 
 export const pageHref = (lang: Lang, slug: string) => (slug ? `/${lang}/${slug}/` : `/${lang}/`);
