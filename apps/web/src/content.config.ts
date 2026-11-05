@@ -14,6 +14,8 @@ const pages = defineCollection({
     skills: z.array(z.string()).optional(),
     links: z.array(z.object({ slug: z.string(), audience: z.string(), text: z.string() })).optional(),
     cta: z.object({ text: z.string() }).optional(),
+    // Contact page only.
+    availability: z.string().optional(),
   }),
 });
 
