@@ -1,0 +1,19 @@
+---
+import { getEntry, render } from "astro:content";
+import { langs, type Lang } from "@/i18n/ui";
+import { prose } from "@/lib/prose";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const page = await getEntry("pages", `${lang}/privacy`);
+if (!page) throw new Error(`Missing content: pages/${lang}/privacy.md`);
+const { Content } = await render(page);
+---
+
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
+  <article class={prose}>
+    <Content />
+  </article>
+</BaseLayout>
